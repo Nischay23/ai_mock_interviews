@@ -1,15 +1,23 @@
+import { isAuthenticated } from "@/lib/actions/auth.action";
 import Image from "next/image";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { ReactNode } from "react";
+import { UserDropdown } from "@/components/DropDown";
 
-const RootLayout = ({
+const RootLayout = async ({
   children,
 }: {
   children: ReactNode;
 }) => {
+  const isUserAuthnicated = await isAuthenticated();
+
+  if (!isUserAuthnicated) {
+    redirect("/signIn");
+  }
   return (
     <div className="root-layout">
-      <nav>
+      <nav className="flex items-center justify-between w-full ">
         <Link
           href={"/"}
           className="flex items-center gap-2"
@@ -22,6 +30,8 @@ const RootLayout = ({
           />
           <h2 className="text-primary-100">PrepWise</h2>
         </Link>
+
+        <UserDropdown />
       </nav>
 
       {children}
