@@ -39,6 +39,8 @@ const AuthFormSchema = (type: FormType) => {
   });
 };
 
+let page = true;
+
 const AuthForm = ({ type }: { type: FormType }) => {
   // 1. Define your form.
   const router = useRouter();
@@ -58,7 +60,6 @@ const AuthForm = ({ type }: { type: FormType }) => {
     values: z.infer<typeof formSchema>
   ) {
     try {
-      setIsLoading(true);
       if (type === "signUp") {
         const { name, email, password } = values;
 
@@ -83,8 +84,10 @@ const AuthForm = ({ type }: { type: FormType }) => {
         toast.success(
           "Account created successfully. Please sign in."
         );
+
         router.push("/signIn");
       } else {
+        setIsLoading(true);
         const { email, password } = values;
 
         const userCredential =
@@ -114,10 +117,11 @@ const AuthForm = ({ type }: { type: FormType }) => {
     } catch (error) {
       console.log(error);
       toast.error(`There was an error: ${error}`);
+      page = false;
     }
   }
 
-  if (isLoading) {
+  if (isLoading && page) {
     return (
       <div className="min-h-screen w-full p-8 max-sm:p-4 bg-background">
         {/* Main Content Container */}
