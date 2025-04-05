@@ -5,7 +5,7 @@ import { generateObject } from "ai";
 import { google } from "@ai-sdk/google";
 import { feedbackSchema } from "@/constants";
 
-export async function getInterviewsByUserId(
+export async function getInterviewByUserId(
   userId: string
 ): Promise<Interview[] | null> {
   const interviews = await db
