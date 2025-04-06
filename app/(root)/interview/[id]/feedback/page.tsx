@@ -8,6 +8,10 @@ import {
 } from "@/lib/actions/general.action";
 import { Button } from "@/components/ui/button";
 import { getCurrentUser } from "@/lib/actions/auth.action";
+import utc from "dayjs/plugin/utc";
+import timezone from "dayjs/plugin/timezone";
+dayjs.extend(utc);
+dayjs.extend(timezone);
 
 const Page = async ({ params }: RouteParams) => {
   const { id } = await params;
@@ -62,9 +66,9 @@ const Page = async ({ params }: RouteParams) => {
             />
             <p>
               {feedback?.createdAt
-                ? dayjs(feedback.createdAt).format(
-                    "MMM D, YYYY h:mm A"
-                  )
+                ? dayjs(feedback.createdAt)
+                    .tz(dayjs.tz.guess())
+                    .format("MMM D, YYYY h:mm A")
                 : "N/A"}
             </p>
           </div>
